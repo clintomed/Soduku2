@@ -20,6 +20,8 @@
 		<!-- The core server part of Vaadin -->
 		<dependency org="com.vaadin" name="vaadin-server" rev="&vaadin.version;" />
 
+		<!-- Push and websocket stuff -->
+		<dependency org="com.vaadin" name="vaadin-push" rev="&vaadin.version;" />
 		<!-- Vaadin themes -->
 		<dependency org="com.vaadin" name="vaadin-themes" rev="&vaadin.version;" />
 
