@@ -162,6 +162,8 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 						System.out.print("Data is: "  + draggedItem + "\n");
 						board.setValue(ourCol, ourRow, draggedItem, draggedItem.equals("0") ? false : true);
 						label.setPropertyDataSource(board.getCellElement(ourCol, ourRow));
+						Broadcaster.broadcastBoard(board);
+						
 				    }
 				
 				});
@@ -201,17 +203,7 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 		final Label enterName = new Label("Enter your name:");
 		
 		
-		final Button test = new Button("Test");
 		
-		test.addClickListener(new Button.ClickListener() {
-			@Override
-		    public void buttonClick(ClickEvent event) {
-		        // Broadcast the message
-				
-		        Broadcaster.broadcastBoard(board);
-		        
-		    }
-		});
 		
 		nameButton.addClickListener(new Button.ClickListener() {
 			@Override
@@ -240,7 +232,7 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 				vLayout.addComponent(chatBox);
 				vLayout.addComponent(chatInput);
 				vLayout.addComponent(sendButton);
-				vLayout.addComponent(test);
+				
 				
 				vLayout.removeComponent(enterName);
 				vLayout.removeComponent(nameInput);
@@ -273,6 +265,7 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 		
 		setContent(vLayout);
 
+		
 		// upload.setReceiver(uploadReceiver);
 		upload.addFinishedListener(uploadReceiver);
 		
