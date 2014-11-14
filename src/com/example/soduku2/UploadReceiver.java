@@ -228,4 +228,9 @@ public class UploadReceiver extends UI implements Receiver, FinishedListener, Br
 		// TODO Auto-generated method stub
 		
 	}
+	
+	 public void detach() {
+	        Broadcaster.unregister(this);
+	        super.detach();
+	    }
 }

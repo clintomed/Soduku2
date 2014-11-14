@@ -57,6 +57,7 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 	private Panel inputPanel;
 	
 	private final VerticalLayout vLayout = new VerticalLayout();
+	private final VerticalLayout chatLayout = new VerticalLayout();
 	private final HorizontalLayout hLayout = new HorizontalLayout();
 	
 	private final HorizontalLayout h2Layout = new HorizontalLayout();
@@ -76,7 +77,7 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 
 	@Override
 	protected void init(VaadinRequest request) {
-
+		
 
 		// Find the application directory
 		String basepath = VaadinService.getCurrent()
@@ -165,7 +166,7 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 						Broadcaster.broadcastBoard(board);
 						
 				    }
-				
+					
 				});
 			
 				grid.addComponent( layoutWrapper, col, row );
@@ -214,12 +215,16 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 				hLayout.addComponent(upload);
 				hLayout.addComponent(solveButton);
 				
+				chatLayout.addComponent(chatBox);
+				chatLayout.addComponent(chatInput);
+				chatLayout.addComponent(sendButton);
 				
 				h2Layout.addComponent(panel);
-				h2Layout.addComponent(inputPanel);
+				h2Layout.addComponent(chatLayout);
 				
 				vLayout.addComponent(h2Layout);
-				
+				vLayout.addComponent(inputPanel);
+
 				hLayout.setMargin(true);
 				hLayout.setSpacing(true);
 				hLayout.setComponentAlignment(solveButton, Alignment.BOTTOM_RIGHT);
@@ -229,9 +234,7 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 				vLayout.setMargin(true);
 				vLayout.setSpacing(true);
 				
-				vLayout.addComponent(chatBox);
-				vLayout.addComponent(chatInput);
-				vLayout.addComponent(sendButton);
+				
 				
 				
 				vLayout.removeComponent(enterName);
