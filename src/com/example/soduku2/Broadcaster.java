@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
+import com.vaadin.ui.GridLayout;
+
 public class Broadcaster implements Serializable {
     private static final long serialVersionUID = -368230891317363146L;
 
@@ -16,6 +18,7 @@ public class Broadcaster implements Serializable {
 
     public interface BroadcastListener {
         void receiveBroadcast(String message);
+        void updateBoard(Board board);
     }
     
     private static LinkedList<BroadcastListener> listeners =
@@ -37,11 +40,24 @@ public class Broadcaster implements Serializable {
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
-                	System.out.println("Trying to broadcast: " + message);
+                	
                     listener.receiveBroadcast(message);
+                   
                 }
             });
     }
     
+    public static synchronized void broadcastBoard(
+            final Board board) {
+        for (final BroadcastListener listener: listeners)
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                	
+                   
+                    listener.updateBoard(board);
+                }
+            });
+    }
     
 }

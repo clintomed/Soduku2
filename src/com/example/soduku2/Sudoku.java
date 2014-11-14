@@ -197,8 +197,21 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 				
 				//Getting the chat input
 		final TextField chatInput = new TextField();
-		final Button button = new Button("Send");
+		final Button sendButton = new Button("Send");
 		final Label enterName = new Label("Enter your name:");
+		
+		
+		final Button test = new Button("Test");
+		
+		test.addClickListener(new Button.ClickListener() {
+			@Override
+		    public void buttonClick(ClickEvent event) {
+		        // Broadcast the message
+				
+		        Broadcaster.broadcastBoard(board);
+		        
+		    }
+		});
 		
 		nameButton.addClickListener(new Button.ClickListener() {
 			@Override
@@ -226,7 +239,8 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 				
 				vLayout.addComponent(chatBox);
 				vLayout.addComponent(chatInput);
-				vLayout.addComponent(button);
+				vLayout.addComponent(sendButton);
+				vLayout.addComponent(test);
 				
 				vLayout.removeComponent(enterName);
 				vLayout.removeComponent(nameInput);
@@ -235,7 +249,7 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 		    }
 		});
 		
-		button.addClickListener(new Button.ClickListener() {
+		sendButton.addClickListener(new Button.ClickListener() {
 			@Override
 		    public void buttonClick(ClickEvent event) {
 		        // Broadcast the message
@@ -256,12 +270,6 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 		vLayout.addComponent(enterName);
 		vLayout.addComponent(nameInput);
 		vLayout.addComponent(nameButton);
-		
-		
-		
-		
-		
-		
 		
 		setContent(vLayout);
 
@@ -288,6 +296,70 @@ public class Sudoku extends UI implements Broadcaster.BroadcastListener{
 	            public void run() {
 	                // Show it somehow
 	               chatBox.addChat(message);
+	            }
+	        });
+	    }
+	 
+	 public void updateBoard(final Board newBoard) {
+	        // Must lock the session to execute logic safely
+	        access(new Runnable() {
+	            @Override
+	            public void run() {
+	                // Show it somehow
+	               
+	            	for( int col = 0; col < 9; col++ ){
+	    				for( int row = 0; row < 9; row++ ){
+	    					String newValue = Integer.toString(newBoard.getIntegerValue(row, col));
+	    					
+	    					board.setReadOnly(col, row, false);
+	    					
+	    					board.setValue(row, col, newValue, newValue.equals("0") ? false : true);
+	    				}	
+	    			}
+	            	
+	            	
+	            	
+	            	for(int col = 0; col < 9; col++ ){
+	    				for(int row = 0; row < 9; row++ ){
+	    					
+	    					grid.removeComponent(col, row);
+	    					
+	    					final Label label = new Label();
+	    					
+	    					final int ourCol = col;
+	    					final int ourRow = row;
+	    					
+	    					label.setPropertyDataSource(board.getCellElement(col, row));
+	    					label.addValueChangeListener(new CEValueChangeListener());
+
+	    					label.setWidth(null);
+	    					label.setImmediate(true);
+	    					
+	    					DragAndDropWrapper layoutWrapper = new DragAndDropWrapper(label);
+	    					
+	    					layoutWrapper.setDropHandler(new DropHandler() {
+	    						public AcceptCriterion getAcceptCriterion() {
+	    					       return AcceptAll.get();
+	    						}
+	    						public void drop(DragAndDropEvent event) {
+	    							
+	    							WrapperTransferable dragInput = (WrapperTransferable) event.getTransferable();
+	    							String draggedItem = dragInput.getDraggedComponent().getCaption();
+	    							
+	    							//WrapperTargetDetails details = (WrapperTargetDetails) event.getTargetDetails();
+	    							
+	    							
+	    							System.out.print("Data is: "  + draggedItem + "\n");
+	    							board.setValue(ourCol, ourRow, draggedItem, draggedItem.equals("0") ? false : true);
+	    							label.setPropertyDataSource(board.getCellElement(ourCol, ourRow));
+	    					    }
+	    					
+	    					});
+	    				
+	    					grid.addComponent( layoutWrapper, col, row );
+	    					grid.setComponentAlignment(layoutWrapper, Alignment.MIDDLE_CENTER);
+	    				}	
+	    			}
 	            }
 	        });
 	    }
