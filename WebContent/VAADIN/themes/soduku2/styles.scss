@@ -1,0 +1,9 @@
+@import "addons.scss";
+@import "soduku2.scss";
+
+/* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
+/* The actual styles should be defined in soduku2.scss */
+.soduku2 {
+  @include addons;
+  @include soduku2;
+}
